@@ -1,0 +1,136 @@
+/* Directory UI: owns the state, wires up the controls and renders the grid. */
+
+(function () {
+  const state = {
+    query: '',
+    filter: 'all',
+    page: 0,
+    seed: 0 // 0 = A–Z, anything else = shuffled
+  };
+
+  const els = {
+    search: document.getElementById('search'),
+    sortButtons: document.querySelectorAll('[data-sort]'),
+    filters: document.querySelector('[data-filters]'),
+    count: document.querySelector('[data-result-count]'),
+    empty: document.querySelector('[data-empty]'),
+    clear: document.querySelector('[data-clear]'),
+    grid: document.querySelector('[data-grid]'),
+    prev: document.querySelector('[data-prev]'),
+    next: document.querySelector('[data-next]'),
+    page: document.querySelector('[data-page]'),
+    chipTemplate: document.getElementById('chip-template'),
+    cardTemplate: document.getElementById('card-template')
+  };
+
+  // Rows per page for a given column count, so pages always end on a full row.
+  function perPage() {
+    const cols = parseInt(getComputedStyle(els.grid).getPropertyValue('--cols'), 10) || 2;
+    if (cols >= 5) return cols * 6;
+    if (cols === 4) return cols * 5;
+    if (cols === 3) return cols * 4;
+    return 12;
+  }
+
+  function setState(changes) {
+    Object.assign(state, changes);
+    render();
+  }
+
+  /* Rendering */
+
+  function buildFilterChips() {
+    for (const [id, label] of FILTERS) {
+      const chip = els.chipTemplate.content.firstElementChild.cloneNode(true);
+      chip.dataset.filter = id;
+      chip.querySelector('[data-label]').textContent = label;
+      chip.querySelector('[data-count]').textContent = countForFilter(id);
+      els.filters.append(chip);
+    }
+  }
+
+  function buildCard(site) {
+    const card = els.cardTemplate.content.firstElementChild.cloneNode(true);
+    card.href = site.url;
+    card.setAttribute('aria-label', `Visit ${site.name}’s website (${site.site})`);
+    card.style.setProperty('--card-fill', site.colour);
+    card.querySelector('[data-name]').textContent = site.name;
+    card.querySelector('[data-site]').textContent = site.site;
+    return card;
+  }
+
+  function render() {
+    const list = querySites(state);
+    const per = perPage();
+    const pages = Math.max(1, Math.ceil(list.length / per));
+    const page = state.page = Math.min(state.page, pages - 1);
+    const start = page * per;
+    const items = list.slice(start, start + per);
+
+    els.grid.replaceChildren(...items.map(buildCard));
+    els.empty.hidden = list.length > 0;
+
+    const from = list.length ? start + 1 : 0;
+    const to = Math.min(list.length, start + per);
+    els.count.textContent = `Showing ${from}–${to} of ${list.length}`;
+
+    els.page.textContent = `Page ${page + 1} / ${pages}`;
+    els.prev.disabled = page === 0;
+    els.next.disabled = page >= pages - 1;
+
+    for (const chip of els.filters.children) {
+      chip.setAttribute('aria-pressed', String(chip.dataset.filter === state.filter));
+    }
+    for (const btn of els.sortButtons) {
+      const active = btn.dataset.sort === (state.seed ? 'shuffle' : 'az');
+      btn.setAttribute('aria-pressed', String(active));
+    }
+  }
+
+  /* Events */
+
+  function goToPage(page) {
+    setState({ page });
+    els.search.closest('section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  els.search.addEventListener('input', (e) => {
+    setState({ query: e.target.value, page: 0 });
+  });
+
+  els.filters.addEventListener('click', (e) => {
+    const chip = e.target.closest('[data-filter]');
+    if (chip) setState({ filter: chip.dataset.filter, page: 0 });
+  });
+
+  for (const btn of els.sortButtons) {
+    btn.addEventListener('click', () => {
+      const seed = btn.dataset.sort === 'shuffle'
+        ? state.seed + 1 + Math.floor(Math.random() * 9999)
+        : 0;
+      setState({ seed, page: 0 });
+    });
+  }
+
+  els.clear.addEventListener('click', () => {
+    els.search.value = '';
+    setState({ query: '', filter: 'all', page: 0 });
+  });
+
+  els.prev.addEventListener('click', () => goToPage(Math.max(0, state.page - 1)));
+  els.next.addEventListener('click', () => goToPage(state.page + 1));
+
+  // Page size follows the column count, so re-render when the layout changes columns.
+  let lastPerPage = 0;
+  window.addEventListener('resize', () => {
+    const per = perPage();
+    if (per !== lastPerPage) {
+      lastPerPage = per;
+      render();
+    }
+  });
+
+  buildFilterChips();
+  lastPerPage = perPage();
+  render();
+})();
