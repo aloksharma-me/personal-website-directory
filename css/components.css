@@ -1,4 +1,4 @@
-/* Reusable pieces: buttons, chips, search, sort toggle, cards. */
+/* Reusable pieces: buttons, chips, search, cards. */
 
 /* Button */
 .btn {
@@ -21,6 +21,12 @@
 }
 
 .btn--raised {
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--on-accent);
   box-shadow: var(--shadow-sm);
 }
 
@@ -111,37 +117,17 @@
   }
 }
 
-/* Sort toggle (A–Z / Shuffle) */
+/* Shuffle button */
 .sort {
-  display: flex;
-  border: var(--rule);
-  box-shadow: var(--shadow-sm);
-}
-
-.sort__btn {
   height: 36px;
   padding: 0 12px;
-  border: 0;
-  background: var(--paper);
-}
-
-.sort__btn + .sort__btn {
-  border-left: var(--rule);
-}
-
-.sort__btn[aria-pressed="true"] {
-  background: var(--accent);
-  color: var(--on-accent);
 }
 
 @media (min-width: 768px) {
   .sort {
-    box-shadow: var(--shadow-md);
-  }
-
-  .sort__btn {
     height: auto;
-    width: 104px;
+    width: 136px;
+    box-shadow: var(--shadow-md);
   }
 }
 

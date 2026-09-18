@@ -5,12 +5,12 @@
     query: '',
     filter: 'all',
     page: 0,
-    seed: 0 // 0 = A–Z, anything else = shuffled
+    seed: 0 // 0 = initial A–Z order, anything else = shuffled
   };
 
   const els = {
     search: document.getElementById('search'),
-    sortButtons: document.querySelectorAll('[data-sort]'),
+    shuffle: document.querySelector('[data-shuffle]'),
     filters: document.querySelector('[data-filters]'),
     count: document.querySelector('[data-result-count]'),
     empty: document.querySelector('[data-empty]'),
@@ -81,10 +81,6 @@
     for (const chip of els.filters.children) {
       chip.setAttribute('aria-pressed', String(chip.dataset.filter === state.filter));
     }
-    for (const btn of els.sortButtons) {
-      const active = btn.dataset.sort === (state.seed ? 'shuffle' : 'az');
-      btn.setAttribute('aria-pressed', String(active));
-    }
   }
 
   /* Events */
@@ -103,14 +99,9 @@
     if (chip) setState({ filter: chip.dataset.filter, page: 0 });
   });
 
-  for (const btn of els.sortButtons) {
-    btn.addEventListener('click', () => {
-      const seed = btn.dataset.sort === 'shuffle'
-        ? state.seed + 1 + Math.floor(Math.random() * 9999)
-        : 0;
-      setState({ seed, page: 0 });
-    });
-  }
+  els.shuffle.addEventListener('click', () => {
+    setState({ seed: state.seed + 1 + Math.floor(Math.random() * 9999), page: 0 });
+  });
 
   els.clear.addEventListener('click', () => {
     els.search.value = '';
