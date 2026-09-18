@@ -32,6 +32,7 @@
   justify-content: center;
   border: var(--rule);
   background: var(--accent);
+  color: var(--on-accent);
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 500;
@@ -48,6 +49,23 @@
   display: none;
   align-items: center;
   gap: 10px;
+  margin-left: auto;
+}
+
+/* Light/dark toggle: shows the moon in light mode, the sun in dark mode. */
+.theme-toggle {
+  width: 40px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.theme-toggle__sun,
+[data-theme="dark"] .theme-toggle__moon {
+  display: none;
+}
+
+[data-theme="dark"] .theme-toggle__sun {
+  display: block;
 }
 
 @media (min-width: 768px) {
@@ -90,6 +108,7 @@
   padding: 0 6px;
   border: var(--rule);
   background: var(--accent);
+  color: var(--on-accent);
 }
 
 @media (min-width: 768px) {
@@ -277,8 +296,8 @@
 /* Footer */
 .site-footer {
   margin-top: 44px;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--footer-bg);
+  color: var(--footer-fg);
 }
 
 .site-footer__heading {
@@ -292,7 +311,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  color: var(--paper);
+  color: var(--footer-fg);
   border-bottom: 2px solid var(--footer-rule);
 }
 
@@ -341,9 +360,9 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 2px solid var(--paper);
+  border: 2px solid var(--footer-fg);
   background: var(--accent);
-  color: var(--ink);
+  color: var(--on-accent);
 }
 
 .site-footer__note {
@@ -354,10 +373,21 @@
   color: var(--footer-muted);
 }
 
+.site-footer__note {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .site-footer__note a {
-  color: var(--paper);
+  color: var(--footer-fg);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.site-footer__stack strong {
+  color: var(--accent);
+  font-weight: 700;
 }
 
 @media (min-width: 768px) {
@@ -418,5 +448,13 @@
     padding: 24px var(--gutter);
     border-top: 2px solid var(--footer-rule);
     font-size: 12px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+  }
+
+  .site-footer__stack {
+    text-align: right;
   }
 }

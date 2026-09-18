@@ -31,6 +31,7 @@ The sites come from two X (Twitter) threads where people shared their personal w
 - **Sort** A–Z, or shuffle for a random order
 - **Pagination** that sizes each page to the grid's column count, so every page ends on a full row
 - **Responsive** layout with a bold, brutalist style (hard offset shadows, yellow accent)
+- **Light/dark mode** that follows your system setting until you choose one, then remembers your choice
 
 ## Tech stack
 

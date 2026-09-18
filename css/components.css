@@ -39,6 +39,7 @@
 
 .chip[aria-pressed="true"] {
   background: var(--accent);
+  color: var(--on-accent);
   box-shadow: var(--shadow-sm);
 }
 
@@ -130,6 +131,7 @@
 
 .sort__btn[aria-pressed="true"] {
   background: var(--accent);
+  color: var(--on-accent);
 }
 
 @media (min-width: 768px) {
@@ -166,6 +168,7 @@
   width: 100%;
   border-bottom: var(--rule);
   background: var(--card-fill, #C9B8A8);
+  filter: brightness(var(--preview-dim));
 }
 
 .card__body {
