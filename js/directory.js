@@ -54,9 +54,13 @@
     return `assets/previews/${site.toLowerCase().replace(/[^a-z0-9.-]+/g, '_')}.webp`;
   }
 
+  // Touch devices (phones, tablets) open sites in the same tab; everything else uses a new tab.
+  const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)');
+
   function buildCard(site) {
     const card = els.cardTemplate.content.firstElementChild.cloneNode(true);
     card.href = site.url;
+    if (!isTouch.matches) card.target = '_blank';
     card.setAttribute('aria-label', `Visit ${site.name}’s website (${site.site})`);
     card.style.setProperty('--card-fill', site.colour);
     card.querySelector('[data-name]').textContent = site.name;
