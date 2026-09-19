@@ -155,6 +155,21 @@
   border-bottom: var(--rule);
   background: var(--card-fill, #C9B8A8);
   filter: brightness(var(--preview-dim));
+  overflow: hidden;
+}
+
+.card__shot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+.card__shot.is-loaded {
+  opacity: 1;
 }
 
 .card__body {

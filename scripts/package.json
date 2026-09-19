@@ -1,0 +1,11 @@
+{
+  "name": "personal-website-directory-scripts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "screenshots": "node screenshots.mjs"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}

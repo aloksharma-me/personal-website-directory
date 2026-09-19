@@ -1,6 +1,6 @@
 # Personal Website Directory
 
-A collection of **585 personal websites** to inspire your own. You can search them, filter them, and shuffle through them on one page.
+A collection of **582 personal websites** to inspire your own. You can search them, filter them, and shuffle through them on one page.
 
 The sites come from two X (Twitter) threads where people shared their personal websites.
 
@@ -15,14 +15,14 @@ The sites come from two X (Twitter) threads where people shared their personal w
 
 | Filter | Sites |
 |--------|------:|
-| `.com` | 240 |
+| `.com` | 238 |
 | `.dev` | 47 |
 | `.me` | 29 |
 | `.xyz` | 26 |
 | `.design` | 14 |
 | Free hosts (Vercel, GitHub Pages, Framer, Netlify, Cloudflare Pages, etc.) | 75 |
-| Other TLDs | 154 |
-| **Total** | **585** |
+| Other TLDs | 153 |
+| **Total** | **582** |
 
 ## Features
 
@@ -39,6 +39,20 @@ The sites come from two X (Twitter) threads where people shared their personal w
 - **Self-hosted fonts**: Google Sans and Google Sans Code (`.woff2`, subset per script)
 - Everything runs in the browser. There is no backend.
 - Made with Claude Code, Warp, VSCode
+
+## Preview screenshots
+
+Card thumbnails are 640×400 WebP screenshots stored in `assets/previews/`. They're generated with a Puppeteer script that uses your installed Google Chrome:
+
+```sh
+cd scripts
+npm install
+npm run screenshots                  # capture sites that don't have a screenshot yet
+npm run screenshots -- --force       # recapture every site
+npm run screenshots -- example.com   # recapture specific sites
+```
+
+If a site has no screenshot, its card shows a solid colour instead.
 
 
 ## Credits
