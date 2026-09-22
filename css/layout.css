@@ -156,8 +156,13 @@
 }
 
 @media (min-width: 768px) {
+  /* Stays in view while the grid scrolls under it; mobile keeps it in the page flow. */
   .directory {
-    padding: 32px var(--gutter) 28px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--paper);
+    padding: 28px var(--gutter);
     grid-template-areas:
       "search sort"
       "filters count";
